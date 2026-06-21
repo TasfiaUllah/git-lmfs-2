@@ -89,9 +89,56 @@ const reportFoundItem = async (req, res) => {
   }
 };
 
+// ✅ Search Items
+const searchItems = async (req, res) => {
+  const { q } = req.query;
+
+  if (!q) {
+    return res.status(400).json({ message: "Search query is required ❌" });
+  }
+
+  try {
+    const { Op } = require("sequelize");
+
+    const lostItems = await LostItem.findAll({
+      where: {
+        status: "active",
+        [Op.or]: [
+          { itemName: { [Op.like]: `%${q}%` } },
+          { description: { [Op.like]: `%${q}%` } },
+        ],
+      },
+      include: [
+        { model: Category, attributes: ["categoryName"] },
+        { model: Location, attributes: ["locationName"] },
+      ],
+    });
+
+    const foundItems = await FoundItem.findAll({
+      where: {
+        status: "active",
+        [Op.or]: [
+          { itemName: { [Op.like]: `%${q}%` } },
+          { description: { [Op.like]: `%${q}%` } },
+        ],
+      },
+      include: [
+        { model: Category, attributes: ["categoryName"] },
+        { model: Location, attributes: ["locationName"] },
+      ],
+    });
+
+    res.status(200).json({ lostItems, foundItems });
+
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
   getRecentLostItems,
   getRecentFoundItems,
   reportLostItem,
   reportFoundItem,
+  searchItems,
 };

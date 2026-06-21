@@ -5,14 +5,16 @@ const {
   getRecentFoundItems,
   reportLostItem,
   reportFoundItem,
+  searchItems,
 } = require("../controllers/itemController");
 const { protect } = require("../middleware/authMiddleware");
 
-// Public routes — login ছাড়াই দেখা যাবে
+// Public routes
 router.get("/lost/recent", getRecentLostItems);
 router.get("/found/recent", getRecentFoundItems);
+router.get("/search", searchItems);
 
-// Protected routes — login করতে হবে
+// Protected routes
 router.post("/lost/report", protect, reportLostItem);
 router.post("/found/report", protect, reportFoundItem);
 
