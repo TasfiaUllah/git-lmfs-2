@@ -38,10 +38,10 @@ function Home() {
       <nav className="navbar">
         <img src={logo} alt="CampusFind" className="nav-logo" />
         <ul className="nav-links">
-          <li>Lost Items</li>
-          <li>Found Items</li>
-          <li>About</li>
-          <li>FAQ</li>
+          <li onClick={() => navigate("/lost-items")}>Lost Items</li>
+          <li onClick={() => navigate("/found-items")}>Found Items</li>
+          <li onClick={() => navigate("/about")}>About</li>
+          <li onClick={() => navigate("/faq")}>FAQ</li>
         </ul>
         <div className="nav-btns">
           <button className="btn-outline" onClick={() => navigate("/login")}>Login</button>
@@ -65,8 +65,8 @@ function Home() {
             </button>
           </div>
           <div className="hero-btns">
-            <button className="btn-report-lost">Report Lost Item</button>
-            <button className="btn-report-found">Report Found Item</button>
+            <button className="btn-report-lost" onClick={() => navigate("/lost-items")}>Report Lost Item</button>
+            <button className="btn-report-found" onClick={() => navigate("/found-items")}>Report Found Item</button>
           </div>
         </div>
         <div className="hero-img">
@@ -94,11 +94,11 @@ function Home() {
       <section className="items-section">
         <div className="section-header">
           <h2>Recent Lost Items</h2>
-          <span className="view-all">View All</span>
+          <span className="view-all" onClick={() => navigate("/lost-items")}>View All</span>
         </div>
         <div className="items-grid">
           {lostItems.map(item => (
-            <div className="item-card" key={item.id}>
+            <div className="item-card" key={item.id} onClick={() => navigate("/lost-items")}>
               <div className="item-img-wrap">
                 <img src={item.img} alt={item.name}/>
               </div>
@@ -116,11 +116,11 @@ function Home() {
       <section className="items-section">
         <div className="section-header">
           <h2>Recent Found Items</h2>
-          <span className="view-all">View All</span>
+          <span className="view-all" onClick={() => navigate("/found-items")}>View All</span>
         </div>
         <div className="items-grid">
           {foundItems.map(item => (
-            <div className="item-card" key={item.id}>
+            <div className="item-card" key={item.id} onClick={() => navigate("/found-items")}>
               <div className="item-img-wrap">
                 <img src={item.img} alt={item.name}/>
               </div>
@@ -170,10 +170,10 @@ function Home() {
         <div className="footer-links">
           <h4>Quick Links</h4>
           <ul>
-            <li>Lost Items</li>
-            <li>Found Items</li>
-            <li>About Us</li>
-            <li>FAQ</li>
+            <li onClick={() => navigate("/lost-items")}>Lost Items</li>
+            <li onClick={() => navigate("/found-items")}>Found Items</li>
+            <li onClick={() => navigate("/about")}>About Us</li>
+            <li onClick={() => navigate("/faq")}>FAQ</li>
           </ul>
         </div>
         <div className="footer-social">
