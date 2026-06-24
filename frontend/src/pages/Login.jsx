@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo-full.png';
-import welcomeImg from '../assets/welcome-image-login.jpeg';
+import welcomeImg from "../assets/welcome-image-login.png";
 import './Auth.css';
 
 function Login() {
