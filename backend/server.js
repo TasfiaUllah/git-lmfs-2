@@ -1,10 +1,19 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const { connectDB } = require("./config/db");
-const authRoutes = require("./routes/authRoutes");
 
 dotenv.config();
+
+const { connectDB } = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
+const itemRoutes = require("./routes/itemRoutes");
+
+// Models import
+require("./models/Category");
+require("./models/Location");
+require("./models/LostItem");
+require("./models/FoundItem");
+
 connectDB();
 
 const app = express();
@@ -13,6 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/items", itemRoutes);
 
 app.get("/", (req, res) => {
   res.send("CampusFind API Running 🚀");
