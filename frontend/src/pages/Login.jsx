@@ -44,7 +44,7 @@ function Login() {
     localStorage.setItem("token", data.token);
 
     // Navigate to dashboard
-    navigate("/dashboard");
+    navigate("/home");
 
   } catch (error) {
     console.error("Login error:", error);
