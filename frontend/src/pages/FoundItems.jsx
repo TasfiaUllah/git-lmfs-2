@@ -4,7 +4,7 @@ import { HiHome } from "react-icons/hi";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { BsBoxSeam } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
-import "./LostItems.css";
+import "./FoundItems.css";
 
 import logo      from "../assets/logo-full.png";
 import logoIcon  from "../assets/logo-icon.png";
@@ -58,12 +58,10 @@ function ClockIcon() {
   );
 }
 
-function LostItems() {
+function FoundItems() {
   const navigate  = useNavigate();
   const location_ = useLocation();
   const fromDashboard = location_.state?.fromDashboard || false;
-  console.log("location.state =", location_.state);
-console.log("fromDashboard =", fromDashboard);
 
   const [search,   setSearch]   = useState("");
   const [category, setCategory] = useState("");
@@ -72,12 +70,25 @@ console.log("fromDashboard =", fromDashboard);
   const [status,   setStatus]   = useState("");
 
   const filtered = allItems.filter((item) => {
-    const matchSearch   = item.name.toLowerCase().includes(search.toLowerCase());
-    const matchCategory = category ? item.category === category : true;
-    const matchStatus   = status   ? item.status   === status   : true;
-    const matchLocation = location ? item.location.includes(location) : true;
-    return matchSearch && matchCategory && matchStatus && matchLocation;
-  });
+  // শুধু Found items দেখাবে
+  if (item.status !== "Found") return false;
+
+  // Name অথবা Location দিয়ে search
+  const searchText = search.toLowerCase().trim();
+
+  const matchSearch =
+    searchText === "" ||
+    item.name.toLowerCase().includes(searchText) ||
+    item.location.toLowerCase().includes(searchText);
+
+  const matchCategory =
+    category === "" || item.category === category;
+
+  const matchLocation =
+    location === "" || item.location === location;
+
+  return matchSearch && matchCategory && matchLocation;
+});
 
   const handleReset = () => {
     setSearch(""); setCategory(""); setLocation(""); setDate(""); setStatus("");
@@ -90,7 +101,7 @@ console.log("fromDashboard =", fromDashboard);
   };
 
   return (
-    <div className={fromDashboard ? "li-dash-layout" : "li-page"}>
+    <div className={fromDashboard ? "fi-dash-layout" : "fi-page"}>
 
       {/* ── DASHBOARD SIDEBAR ── */}
       {fromDashboard && (
@@ -102,16 +113,12 @@ console.log("fromDashboard =", fromDashboard);
           <nav className="sidebar-nav">
 
             {/* 1. Home */}
-<button
-  className="sidebar-btn"
-  onClick={() => navigate("/dashboard")}
-  title="Dashboard"
->
-  <HiHome size={22} color="#888" />
-</button>
+            <button className="sidebar-btn" onClick={() => navigate("/dashboard")} title="Dashboard">
+              <HiHome size={22} color="#888" />
+            </button>
 
-            {/* 2. Lost Items — ACTIVE */}
-            <button className="sidebar-btn sidebar-btn--active" onClick={() => navigate("/lost-items", { state: { fromDashboard: true } })} title="Lost Items">
+            {/* 2. Lost Items */}
+            <button className="sidebar-btn" onClick={() => navigate("/lost-items", { state: { fromDashboard: true } })} title="Lost Items">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="7" height="7" rx="1"/>
                 <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -120,16 +127,8 @@ console.log("fromDashboard =", fromDashboard);
               </svg>
             </button>
 
-            {/* 3. Found Items */}
-            <button
-  className="sidebar-btn"
-  onClick={() =>
-    navigate("/found-items", {
-      state: { fromDashboard: true },
-    })
-  }
-  title="Found Items"
->
+            {/* 3. Found Items — ACTIVE */}
+            <button className="sidebar-btn sidebar-btn--active" onClick={() => navigate("/found-items", { state: { fromDashboard: true } })} title="Found Items">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <polygon points="12,2 15.5,4.5 15.5,9.5 12,12 8.5,9.5 8.5,4.5"/>
                 <polygon points="6,12 9.5,14.5 9.5,19.5 6,22 2.5,19.5 2.5,14.5"/>
@@ -161,45 +160,55 @@ console.log("fromDashboard =", fromDashboard);
       )}
 
       {/* ── MAIN CONTENT ── */}
-      <div className="li-content">
+      <div className="fi-content">
 
         {/* TOP NAVBAR — শুধু home থেকে আসলে */}
         {!fromDashboard && (
-          <nav className="li-navbar">
-            <img src={logo} alt="CampusFind" className="li-nav-logo" />
-            <div className="li-nav-search">
+          <nav className="fi-navbar">
+            <img src={logo} alt="CampusFind" className="fi-nav-logo" />
+            <div className="fi-nav-search">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
                 stroke="#aaa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"/>
                 <path d="M21 21l-4.35-4.35"/>
               </svg>
-              <input type="text" placeholder="Search for object..." />
+              <input
+  type="text"
+  placeholder="Search for object..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+/>
             </div>
-            <div className="li-nav-icons">
+            <div className="fi-nav-icons">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
                 stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
                 <path d="M13.73 21a2 2 0 01-3.46 0"/>
               </svg>
-              <div className="li-nav-avatar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
-              </div>
+              <div
+  className="fi-nav-avatar"
+  onClick={() => navigate("/dashboard")}
+  style={{ cursor: "pointer" }}
+  title="Dashboard"
+>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+</div>
             </div>
           </nav>
         )}
 
         {/* PAGE HEADER */}
-        <div className="li-header">
-          <h1>Lost Items</h1>
-          <p>Browse all reported lost items on campus</p>
+        <div className="fi-header">
+          <h1>Found Items</h1>
+          <p>Browse all reported found items on campus</p>
         </div>
 
         {/* SEARCH + FILTER ROW */}
-        <div className="li-searchrow">
-          <div className="li-search">
+        <div className="fi-searchrow">
+          <div className="fi-search">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
               stroke="#aaa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"/>
@@ -212,7 +221,7 @@ console.log("fromDashboard =", fromDashboard);
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button className="li-filter-btn">
+          <button className="fi-filter-btn">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M4 6h16M8 12h8M11 18h2"/>
@@ -222,13 +231,13 @@ console.log("fromDashboard =", fromDashboard);
         </div>
 
         {/* BODY */}
-        <div className="li-body">
+        <div className="fi-body">
 
           {/* FILTER SIDEBAR */}
-          <aside className="li-sidebar">
-            <div className="li-filter-group">
+          <aside className="fi-sidebar">
+            <div className="fi-filter-group">
               <label>Category</label>
-              <div className="li-select-wrap">
+              <div className="fi-select-wrap">
                 <select value={category} onChange={(e) => setCategory(e.target.value)}>
                   <option value="">Select an option</option>
                   <option value="Stationery">Stationery</option>
@@ -239,9 +248,9 @@ console.log("fromDashboard =", fromDashboard);
                 </select>
               </div>
             </div>
-            <div className="li-filter-group">
+            <div className="fi-filter-group">
               <label>Location</label>
-              <div className="li-select-wrap">
+              <div className="fi-select-wrap">
                 <select value={location} onChange={(e) => setLocation(e.target.value)}>
                   <option value="">Select an option</option>
                   <option value="Building 1, FA1">Building 1, FA1</option>
@@ -256,15 +265,15 @@ console.log("fromDashboard =", fromDashboard);
                 </select>
               </div>
             </div>
-            <div className="li-filter-group">
+            <div className="fi-filter-group">
               <label>Date</label>
-              <div className="li-select-wrap li-date-wrap">
+              <div className="fi-select-wrap fi-date-wrap">
                 <input type="date" value={date} onChange={(e) => setDate(e.target.value)}/>
               </div>
             </div>
-            <div className="li-filter-group">
+            <div className="fi-filter-group">
               <label>Status</label>
-              <div className="li-select-wrap">
+              <div className="fi-select-wrap">
                 <select value={status} onChange={(e) => setStatus(e.target.value)}>
                   <option value="">Select an option</option>
                   <option value="Lost">Lost</option>
@@ -272,21 +281,21 @@ console.log("fromDashboard =", fromDashboard);
                 </select>
               </div>
             </div>
-            <button className="li-reset-btn" onClick={handleReset}>Reset Filters</button>
+            <button className="fi-reset-btn" onClick={handleReset}>Reset Filters</button>
           </aside>
 
           {/* GRID */}
-          <main className="li-main">
+          <main className="fi-main">
             {filtered.length === 0 ? (
-              <p className="li-empty">No items match your filters.</p>
+              <p className="fi-empty">No items match your filters.</p>
             ) : (
-              <div className="li-grid">
+              <div className="fi-grid">
                 {filtered.map((item) => (
-                  <div className="li-card" key={item.id}>
-                    <div className="li-card-img">
+                  <div className="fi-card" key={item.id}>
+                    <div className="fi-card-img">
                       <img src={item.img} alt={item.name} />
                     </div>
-                    <div className="li-card-info">
+                    <div className="fi-card-info">
                       <h4>{item.name}</h4>
                       <p><LocationIcon /> {item.location}</p>
                       <p><ClockIcon /> {item.time}</p>
@@ -300,11 +309,11 @@ console.log("fromDashboard =", fromDashboard);
 
         {/* FOOTER — শুধু home থেকে আসলে */}
         {!fromDashboard && (
-          <footer className="li-footer">
-            <div className="li-footer-left">
-              <img src={logo} alt="CampusFind" className="li-footer-logo" />
+          <footer className="fi-footer">
+            <div className="fi-footer-left">
+              <img src={logo} alt="CampusFind" className="fi-footer-logo" />
             </div>
-            <div className="li-footer-links">
+            <div className="fi-footer-links">
               <h4>Quick Links</h4>
               <ul>
                 <li onClick={() => navigate("/lost-items")}>Lost Items</li>
@@ -313,9 +322,9 @@ console.log("fromDashboard =", fromDashboard);
                 <li onClick={() => navigate("/faq")}>FAQ</li>
               </ul>
             </div>
-            <div className="li-footer-social">
+            <div className="fi-footer-social">
               <h4>Follow us</h4>
-              <div className="li-social-icons">
+              <div className="fi-social-icons">
                 <span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
@@ -338,4 +347,4 @@ console.log("fromDashboard =", fromDashboard);
   );
 }
 
-export default LostItems;
+export default FoundItems;

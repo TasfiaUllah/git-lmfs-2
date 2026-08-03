@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Home.css";
 
+
 import heroImg from "../assets/hero-image.png";
 import logo    from "../assets/logo-full.png";
 
@@ -103,12 +104,11 @@ function Home() {
         </button>
 
         <ul className={`nav-links ${menuOpen ? "nav-links--open" : ""}`}>
-        <li onClick={() => navigate("/lost-items")}>Lost Items</li>
-          <li>Found Items</li>
-          <li>About</li>
-          <li>FAQ</li>
-        </ul>
-
+  <li onClick={() => navigate("/lost-items")}>Lost Items</li>
+  <li onClick={() => navigate("/found-items")}>Found Items</li>
+  <li>About</li>
+  <li>FAQ</li>
+</ul>
         <div className="nav-btns">
           {isLoggedIn ? (
             /* ── Logged in: Bell + Avatar ── */

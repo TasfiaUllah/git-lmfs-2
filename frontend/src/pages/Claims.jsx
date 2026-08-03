@@ -95,28 +95,54 @@ export default function Claims() {
   return (
     <div className="dash-layout">
 
-      {/* ── SIDEBAR ── */}
+      {/* ── SIDEBAR (same as LostItems.jsx) ── */}
       <aside className="dash-sidebar">
         <div className="sidebar-logo">
           <img src={logoIcon} alt="CampusFind" className="sidebar-logo-img" />
         </div>
         <div className="sidebar-divider" />
         <nav className="sidebar-nav">
+
+          {/* 1. Home */}
           <button className="sidebar-btn" onClick={() => navigate("/dashboard")} title="Dashboard">
-            <HiHome size={22} color="#aaa" />
+            <HiHome size={22} color="#888" />
           </button>
-          <button className="sidebar-btn sidebar-btn--active" title="Claims">
+
+          {/* 2. Lost Items */}
+          <button className="sidebar-btn" onClick={() => navigate("/lost-items", { state: { fromDashboard: true } })} title="Lost Items">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+          </button>
+
+          {/* 3. Found Items */}
+          <button className="sidebar-btn" onClick={() => navigate("/found-items")} title="Found Items">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12,2 15.5,4.5 15.5,9.5 12,12 8.5,9.5 8.5,4.5"/>
+              <polygon points="6,12 9.5,14.5 9.5,19.5 6,22 2.5,19.5 2.5,14.5"/>
+              <polygon points="18,12 21.5,14.5 21.5,19.5 18,22 14.5,19.5 14.5,14.5"/>
+            </svg>
+          </button>
+
+          {/* 4. Claims — ACTIVE */}
+          <button className="sidebar-btn sidebar-btn--active" onClick={() => navigate("/claims")} title="Claims">
             <span className="icon-stack">
               <BsBoxSeam size={20} color="#F59E0B" />
               <HiMiniMagnifyingGlass size={10} color="#F59E0B" className="icon-overlay" />
             </span>
           </button>
-          <button className="sidebar-btn" onClick={() => navigate("/found-items")} title="Found Items">
+
+          {/* 5. Claims Resolved */}
+          <button className="sidebar-btn" onClick={() => navigate("/claims-resolved")} title="Claims Resolved">
             <span className="icon-stack">
               <BsBoxSeam size={20} color="#14B8A6" />
               <span className="icon-check">✓</span>
             </span>
           </button>
+
         </nav>
         <button className="sidebar-logout" onClick={handleLogout} title="Logout">
           <FiLogOut size={20} color="#e53e3e" />
