@@ -151,7 +151,11 @@ fetch(`${API_BASE}/items/found/my`, { headers })
           </button>
 
           {/* 2. Lost Items — orange 4-grid squares */}
-          <button className="sidebar-btn" onClick={() => navigate("/lost-items", { state: { fromDashboard: true } })} title="Lost Items">
+          <button className="sidebar-btn" onClick={() =>
+  navigate("/lost-items", {
+    state: { fromDashboard: true },
+  })
+} title="Lost Items">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="3" width="7" height="7" rx="1"/>
               <rect x="14" y="3" width="7" height="7" rx="1"/>
@@ -161,7 +165,15 @@ fetch(`${API_BASE}/items/found/my`, { headers })
           </button>
 
           {/* 3. Found Items — green 3 hexagons */}
-          <button className="sidebar-btn" onClick={() => navigate("/found-items")} title="Found Items">
+          <button
+  className="sidebar-btn"
+  onClick={() =>
+    navigate("/found-items", {
+      state: { fromDashboard: true },
+    })
+  }
+  title="Found Items"
+>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="12,2 15.5,4.5 15.5,9.5 12,12 8.5,9.5 8.5,4.5"/>
               <polygon points="6,12 9.5,14.5 9.5,19.5 6,22 2.5,19.5 2.5,14.5"/>
