@@ -35,17 +35,23 @@ const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 function Home() {
   const navigate = useNavigate();
 
-  const [lostItems,  setLostItems]  = useState(fallbackLostItems);
-  const [foundItems, setFoundItems] = useState(fallbackFoundItems);
-  const [stats,      setStats]      = useState({ reported: 1245, found: 867, users: 2315 });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [menuOpen,   setMenuOpen]   = useState(false);
+  const [lostItems,    setLostItems]    = useState(fallbackLostItems);
+  const [foundItems,   setFoundItems]   = useState(fallbackFoundItems);
+  const [stats,        setStats]        = useState({ reported: 1245, found: 867, users: 2315 });
+  const [isLoggedIn,   setIsLoggedIn]   = useState(false);
 
+  const [menuOpen,     setMenuOpen]     = useState(false);
+
+
+  // Check login status
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
 
+
+
+  // Fetch from API
   useEffect(() => {
     axios.get(`${API_BASE}/items/lost?limit=4`)
       .then(res => {
@@ -91,20 +97,23 @@ function Home() {
       <nav className="navbar">
         <img src={logo} alt="CampusFind" className="nav-logo" />
 
+        {/* Hamburger for mobile */}
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           <span/><span/><span/>
         </button>
 
         <ul className={`nav-links ${menuOpen ? "nav-links--open" : ""}`}>
-          <li onClick={() => navigate("/lost-items")}>Lost Items</li>
-          <li onClick={() => navigate("/found-items")}>Found Items</li>
-          <li onClick={() => navigate("/about")}>About</li>
-          <li onClick={() => navigate("/faq")}>FAQ</li>
+        <li onClick={() => navigate("/lost-items")}>Lost Items</li>
+          <li>Found Items</li>
+          <li>About</li>
+          <li>FAQ</li>
         </ul>
 
         <div className="nav-btns">
           {isLoggedIn ? (
+            /* ── Logged in: Bell + Avatar ── */
             <div className="nav-user">
+              {/* Bell */}
               <button className="nav-bell" title="Notifications">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -112,7 +121,13 @@ function Home() {
                   <path d="M13.73 21a2 2 0 01-3.46 0"/>
                 </svg>
               </button>
-              <button className="nav-avatar" onClick={() => navigate("/dashboard")} title="Dashboard">
+
+              {/* Avatar — direct to dashboard */}
+              <button
+                className="nav-avatar"
+                onClick={() => navigate("/dashboard")}
+                title="Dashboard"
+              >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="white"
                   stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
@@ -121,6 +136,7 @@ function Home() {
               </button>
             </div>
           ) : (
+            /* ── Not logged in: Login + Register ── */
             <>
               <button className="btn-outline" onClick={() => navigate("/login")}>Login</button>
               <button className="btn-solid"   onClick={() => navigate("/register")}>Register</button>
@@ -145,8 +161,8 @@ function Home() {
             </button>
           </div>
           <div className="hero-btns">
-            <button className="btn-report-lost" onClick={() => navigate("/lost-items")}>Report Lost Item</button>
-            <button className="btn-report-found" onClick={() => navigate("/found-items")}>Report Found Item</button>
+            <button className="btn-report-lost">Report Lost Item</button>
+            <button className="btn-report-found">Report Found Item</button>
           </div>
         </div>
         <div className="hero-img">
@@ -174,11 +190,11 @@ function Home() {
       <section className="items-section">
         <div className="section-header">
           <h2>Recent Lost Items</h2>
-          <span className="view-all" onClick={() => navigate("/lost-items")}>View All</span>
+          <span className="view-all">View All</span>
         </div>
         <div className="items-grid">
           {lostItems.map(item => (
-            <div className="item-card" key={item.id} onClick={() => navigate("/lost-items")}>
+            <div className="item-card" key={item.id}>
               <div className="item-img-wrap">
                 <img src={item.img} alt={item.name}/>
               </div>
@@ -196,11 +212,11 @@ function Home() {
       <section className="items-section">
         <div className="section-header">
           <h2>Recent Found Items</h2>
-          <span className="view-all" onClick={() => navigate("/found-items")}>View All</span>
+          <span className="view-all">View All</span>
         </div>
         <div className="items-grid">
           {foundItems.map(item => (
-            <div className="item-card" key={item.id} onClick={() => navigate("/found-items")}>
+            <div className="item-card" key={item.id}>
               <div className="item-img-wrap">
                 <img src={item.img} alt={item.name}/>
               </div>
@@ -241,10 +257,10 @@ function Home() {
         <div className="footer-links">
           <h4>Quick Links</h4>
           <ul>
-            <li onClick={() => navigate("/lost-items")}>Lost Items</li>
-            <li onClick={() => navigate("/found-items")}>Found Items</li>
-            <li onClick={() => navigate("/about")}>About Us</li>
-            <li onClick={() => navigate("/faq")}>FAQ</li>
+            <li>Lost Items</li>
+            <li>Found Items</li>
+            <li>About Us</li>
+            <li>FAQ</li>
           </ul>
         </div>
         <div className="footer-social">
