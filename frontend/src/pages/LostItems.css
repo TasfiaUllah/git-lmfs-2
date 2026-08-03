@@ -336,3 +336,16 @@
   .li-footer-social h4 { text-align: left; }
   .li-social-icons { justify-content: flex-start; }
 }
+/* ── DASHBOARD LAYOUT ── */
+.li-dash-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f0fc;
+  font-family: 'Nunito', sans-serif;
+}
+
+.li-content {
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+}

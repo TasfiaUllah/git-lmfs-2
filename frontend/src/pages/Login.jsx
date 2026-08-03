@@ -42,6 +42,7 @@ function Login() {
 
     // Save token
     localStorage.setItem("token", data.token);
+    localStorage.setItem("userName", data.fullName || data.name || "User");
 
     // Navigate to dashboard
     navigate("/home");
