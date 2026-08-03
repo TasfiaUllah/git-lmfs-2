@@ -26,6 +26,10 @@ const LostItem = sequelize.define("LostItem", {
     type: DataTypes.ENUM("pending", "active", "claimed", "recovered"),
     defaultValue: "pending",
   },
+  views: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,

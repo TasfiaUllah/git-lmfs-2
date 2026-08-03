@@ -15,6 +15,7 @@ require("./models/Location");
 require("./models/LostItem");
 require("./models/FoundItem");
 require("./models/Claim");
+require("./models/SavedItem");
 
 
 connectDB();
