@@ -58,7 +58,9 @@ useEffect(() => {
     .then(res => {
       const data = res.data.items.map((item, i) => ({
         id: item.id,
-        img: item.imageUrl || [item1, item2, item3, item4][i % 4],
+        img: item.imageUrl
+  ? `http://localhost:5000${item.imageUrl}`
+  : [item1, item2, item3, item4][i % 4],
         name: item.itemName,
         location: item.Location?.locationName,
         time: item.createdAt,
@@ -71,7 +73,9 @@ useEffect(() => {
     .then(res => {
       const data = res.data.items.map((item, i) => ({
         id: item.id,
-        img: item.imageUrl || [found1, found2, found3, found4][i % 4],
+        img: item.imageUrl
+  ? `http://localhost:5000${item.imageUrl}`
+  : [found1, found2, found3, found4][i % 4],
         name: item.itemName,
         location: item.Location?.locationName,
         time: item.createdAt,
@@ -96,7 +100,13 @@ useEffect(() => {
 
       {/* ── NAVBAR ── */}
       <nav className="navbar">
-        <img src={logo} alt="CampusFind" className="nav-logo" />
+        <img
+  src={logo}
+  alt="CampusFind"
+  className="nav-logo"
+  onClick={() => navigate("/")}
+  style={{ cursor: "pointer" }}
+/>
 
         {/* Hamburger for mobile */}
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
@@ -252,7 +262,12 @@ useEffect(() => {
       {/* ── FOOTER ── */}
       <footer className="footer">
         <div className="footer-left">
-          <img src={logo} alt="CampusFind" className="footer-logo"/>
+          <img
+  src={logo}
+  alt="CampusFind"
+  className="footer-logo"
+  onClick={() => navigate("/")}
+/>
         </div>
         <div className="footer-links">
           <h4>Quick Links</h4>

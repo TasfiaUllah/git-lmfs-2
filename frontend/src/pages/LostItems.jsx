@@ -1,5 +1,6 @@
+
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
 import { HiHome } from "react-icons/hi";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { BsBoxSeam } from "react-icons/bs";
@@ -22,21 +23,24 @@ import charger   from "../assets/charger.avif";
 import flask     from "../assets/flask.avif";
 import headphone from "../assets/headphone.avif";
 
-const allItems = [
-  { id: 1,  img: lostImg1,  name: "Poncho",        location: "Building 3, FA1",  time: "1 hour ago",   category: "Clothing",     status: "Lost"  },
-  { id: 2,  img: lostImg2,  name: "Helmet",         location: "Parking Area",     time: "3 hours ago",  category: "Accessories",  status: "Lost"  },
-  { id: 3,  img: lostImg3,  name: "Pencil Bag",     location: "Library, Block B", time: "5 hours ago",  category: "Stationery",   status: "Lost"  },
-  { id: 4,  img: lostImg4,  name: "Scissors",       location: "Cafeteria",        time: "2 days ago",   category: "Stationery",   status: "Lost"  },
-  { id: 5,  img: foundImg1, name: "Wallet",         location: "Building 2, FA3",  time: "30 mins ago",  category: "Accessories",  status: "Found" },
-  { id: 6,  img: foundImg2, name: "Bracelet",       location: "Building 7, FA4",  time: "2 hours ago",  category: "Accessories",  status: "Found" },
-  { id: 7,  img: foundImg3, name: "Water Bottle",   location: "Building 5, FA2",  time: "4 hours ago",  category: "Others",       status: "Found" },
-  { id: 8,  img: foundImg4, name: "Leather Jacket", location: "Building 1, FA1",  time: "1 day ago",    category: "Clothing",     status: "Found" },
-  { id: 9,  img: airpods,   name: "AirPods",        location: "Block C, Room 12", time: "2 hours ago",  category: "Electronics",  status: "Lost"  },
-  { id: 10, img: calc,      name: "Calculator",     location: "Building 4, FA2",  time: "6 hours ago",  category: "Electronics",  status: "Lost"  },
-  { id: 11, img: charger,   name: "Charger",        location: "Library, Block A", time: "1 day ago",    category: "Electronics",  status: "Lost"  },
-  { id: 12, img: flask,     name: "Flask",          location: "Cafeteria",        time: "3 hours ago",  category: "Others",       status: "Lost"  },
-  { id: 13, img: headphone, name: "Headphone",      location: "Building 6, FA1",  time: "5 hours ago",  category: "Electronics",  status: "Lost"  },
-];
+// const allItems = [
+//   { id: 1,  img: lostImg1,  name: "Poncho",        location: "Building 3, FA1",  time: "1 hour ago",   category: "Clothing",     status: "Lost"  },
+//   { id: 2,  img: lostImg2,  name: "Helmet",         location: "Parking Area",     time: "3 hours ago",  category: "Accessories",  status: "Lost"  },
+//   { id: 3,  img: lostImg3,  name: "Pencil Bag",     location: "Library, Block B", time: "5 hours ago",  category: "Stationery",   status: "Lost"  },
+//   { id: 4,  img: lostImg4,  name: "Scissors",       location: "Cafeteria",        time: "2 days ago",   category: "Stationery",   status: "Lost"  },
+//   { id: 5,  img: foundImg1, name: "Wallet",         location: "Building 2, FA3",  time: "30 mins ago",  category: "Accessories",  status: "Found" },
+//   { id: 6,  img: foundImg2, name: "Bracelet",       location: "Building 7, FA4",  time: "2 hours ago",  category: "Accessories",  status: "Found" },
+//   { id: 7,  img: foundImg3, name: "Water Bottle",   location: "Building 5, FA2",  time: "4 hours ago",  category: "Others",       status: "Found" },
+//   { id: 8,  img: foundImg4, name: "Leather Jacket", location: "Building 1, FA1",  time: "1 day ago",    category: "Clothing",     status: "Found" },
+//   { id: 9,  img: airpods,   name: "AirPods",        location: "Block C, Room 12", time: "2 hours ago",  category: "Electronics",  status: "Lost"  },
+//   { id: 10, img: calc,      name: "Calculator",     location: "Building 4, FA2",  time: "6 hours ago",  category: "Electronics",  status: "Lost"  },
+//   { id: 11, img: charger,   name: "Charger",        location: "Library, Block A", time: "1 day ago",    category: "Electronics",  status: "Lost"  },
+//   { id: 12, img: flask,     name: "Flask",          location: "Cafeteria",        time: "3 hours ago",  category: "Others",       status: "Lost"  },
+//   { id: 13, img: headphone, name: "Headphone",      location: "Building 6, FA1",  time: "5 hours ago",  category: "Electronics",  status: "Lost"  },
+// ];
+
+const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 
 function LocationIcon() {
   return (
@@ -62,22 +66,52 @@ function LostItems() {
   const navigate  = useNavigate();
   const location_ = useLocation();
   const fromDashboard = location_.state?.fromDashboard || false;
-  console.log("location.state =", location_.state);
-console.log("fromDashboard =", fromDashboard);
+ // console.log("location.state =", location_.state);
+//console.log("fromDashboard =", fromDashboard);
 
   const [search,   setSearch]   = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [date,     setDate]     = useState("");
   const [status,   setStatus]   = useState("");
+  const [allItems, setAllItems] = useState([]);
+  
+ useEffect(() => {
+  fetch(`${API_BASE}/items/lost/all`)
+    .then((res) => res.json())
+    .then((data) => {
+  console.log(data.items);
+  console.log(data.items[0]);
+
+  const items = data.items.map((item) => ({
+    id: item.id,
+    imageUrl: item.imageUrl,
+    itemName: item.itemName,
+    createdAt: item.createdAt,
+    Location: item.Location,
+    Category: item.Category,
+  }));
+
+  setAllItems(items);
+})
+    .catch(console.error);
+}, []);
 
   const filtered = allItems.filter((item) => {
-    const matchSearch   = item.name.toLowerCase().includes(search.toLowerCase());
-    const matchCategory = category ? item.category === category : true;
-    const matchStatus   = status   ? item.status   === status   : true;
-    const matchLocation = location ? item.location.includes(location) : true;
-    return matchSearch && matchCategory && matchStatus && matchLocation;
-  });
+  const matchSearch = (item.itemName || "")
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  const matchCategory = category
+    ? item.Category?.categoryName === category
+    : true;
+
+  const matchLocation = location
+    ? item.Location?.locationName?.includes(location)
+    : true;
+
+  return matchSearch && matchCategory && matchLocation;
+});
 
   const handleReset = () => {
     setSearch(""); setCategory(""); setLocation(""); setDate(""); setStatus("");
@@ -284,13 +318,27 @@ console.log("fromDashboard =", fromDashboard);
                 {filtered.map((item) => (
                   <div className="li-card" key={item.id}>
                     <div className="li-card-img">
-                      <img src={item.img} alt={item.name} />
-                    </div>
-                    <div className="li-card-info">
-                      <h4>{item.name}</h4>
-                      <p><LocationIcon /> {item.location}</p>
-                      <p><ClockIcon /> {item.time}</p>
-                    </div>
+  <img
+  src={`http://localhost:5000${item.imageUrl}`}
+  alt={item.itemName}
+  onError={(e) => {
+    console.log(item.imageUrl);
+    e.target.style.border = "2px solid red";
+  }}
+/>
+</div>
+
+<div className="li-card-info">
+ <h4>{item.itemName}</h4>
+
+<p>
+  <LocationIcon /> {item.Location?.locationName}
+</p>
+
+<p>
+  <ClockIcon /> {new Date(item.createdAt).toLocaleDateString()}
+</p>
+</div>
                   </div>
                 ))}
               </div>

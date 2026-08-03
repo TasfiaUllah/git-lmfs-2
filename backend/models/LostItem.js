@@ -42,6 +42,10 @@ const LostItem = sequelize.define("LostItem", {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  imageUrl: {
+  type: DataTypes.STRING,
+  allowNull: true,
+},
 }, {
   tableName: "lost_items",
   timestamps: true,

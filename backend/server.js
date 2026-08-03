@@ -24,10 +24,11 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/images", express.static("public/images"));
 app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/claims", claimRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("CampusFind API Running 🚀");
