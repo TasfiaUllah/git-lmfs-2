@@ -31,6 +31,11 @@
   color: #1a1a1a;
   cursor: pointer;
 }
+
+.nav-links li {
+  cursor: pointer;
+}
+
 .nav-links li:hover { color: #4B2FA0; }
 
 .nav-btns { display: flex; gap: 14px; }
@@ -417,4 +422,117 @@
   .footer-links ul { flex-direction: column; gap: 12px; }
   .footer-social h4 { text-align: left; }
   .social-icons  { justify-content: flex-start; }
+}
+/* ── Add these at the bottom of Home.css ── */
+
+/* Bell button */
+.nav-bell {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #4B2FA0;
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.nav-bell:hover { background: #f0eaf8; }
+
+/* Avatar button */
+.nav-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #4B2FA0;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.nav-avatar:hover { background: #3d1fa8; }
+
+/* User section wrapper */
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+/* Dropdown menu */
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: #fff;
+  border: 1px solid #ede8f8;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(75, 47, 160, 0.12);
+  min-width: 160px;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.nav-dropdown-item {
+  padding: 12px 18px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.nav-dropdown-item:hover { background: #f4f0fc; color: #4B2FA0; }
+
+.nav-dropdown-divider {
+  height: 1px;
+  background: #ede8f8;
+}
+
+.nav-dropdown-logout {
+  color: #e53e3e;
+}
+.nav-dropdown-logout:hover { background: #fff5f5; color: #c53030; }
+
+/* Hamburger for mobile */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #4B2FA0;
+  border-radius: 2px;
+}
+
+/* Mobile nav */
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    flex-direction: column;
+    gap: 0;
+    border-bottom: 1px solid #ede8f8;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    z-index: 99;
+    padding: 8px 0;
+  }
+  .nav-links--open { display: flex; }
+  .nav-links li { padding: 14px 24px; border-bottom: 1px solid #f4f0fc; }
 }
