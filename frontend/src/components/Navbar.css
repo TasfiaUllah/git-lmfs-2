@@ -1,0 +1,96 @@
+.cf-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 40px;
+  background: #ffffff;
+  border-bottom: 1px solid #eee;
+}
+
+.cf-navbar-logo img {
+  height: 40px;
+}
+
+.cf-navbar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  max-width: 500px;
+  margin: 0 40px;
+  padding: 10px 16px;
+  background: #f5f3fa;
+  border-radius: 30px;
+  color: #999;
+}
+
+.cf-navbar-search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 14px;
+}
+
+.cf-navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #4F18DC;
+}
+
+.cf-navbar-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #6626D2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.cf-navbar-links {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  font-weight: 500;
+}
+
+.cf-navbar-links li {
+  cursor: pointer;
+}
+
+.cf-navbar-links li:hover {
+  color: #4F18DC;
+}
+
+.cf-navbar-guest-btns {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-outline {
+  padding: 8px 20px;
+  border: 1.5px solid #4F18DC;
+  color: #4F18DC;
+  background: transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-solid {
+  padding: 8px 20px;
+  border: none;
+  background: #4F18DC;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}

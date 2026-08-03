@@ -48,6 +48,8 @@ const reportLostItem = async (req, res) => {
   }
 
   try {
+    const imagePaths = req.files ? req.files.map((f) => f.filename) : [];
+
     const item = await LostItem.create({
       itemName,
       description,
@@ -56,6 +58,7 @@ const reportLostItem = async (req, res) => {
       locationId,
       userId: req.user.id,
       status: "pending",
+      images: JSON.stringify(imagePaths),
     });
 
     res.status(201).json({ message: "Lost item reported ✅", item });
@@ -66,21 +69,25 @@ const reportLostItem = async (req, res) => {
 
 // ✅ POST Report Found Item
 const reportFoundItem = async (req, res) => {
-  const { itemName, description, dateFound, categoryId, locationId } = req.body;
+  const { itemName, description, dateFound, categoryId, locationId, currentlyWith } = req.body;
 
   if (!itemName || !categoryId) {
     return res.status(400).json({ message: "Item name and category are required ❌" });
   }
 
   try {
+    const imagePaths = req.files ? req.files.map((f) => f.filename) : [];
+
     const item = await FoundItem.create({
       itemName,
       description,
       dateFound,
       categoryId,
       locationId,
+      currentlyWith,
       userId: req.user.id,
       status: "pending",
+      images: JSON.stringify(imagePaths),
     });
 
     res.status(201).json({ message: "Found item reported ✅", item });

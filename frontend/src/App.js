@@ -3,6 +3,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import LostItems from './pages/LostItems';
+import ReportLostItem from './pages/ReportLostItem';
+import ReportFoundItem from './pages/ReportFoundItem';
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/lost-items" element={<LostItems />} />
+        <Route path="/report-lost" element={<ReportLostItem />} />
+        <Route path="/report-found" element={<ReportFoundItem />} />
       </Routes>
     </BrowserRouter>
   );
