@@ -134,12 +134,31 @@ export default function Dashboard() {
         <div className="sidebar-divider" />
 
         <nav className="sidebar-nav">
-          {/* Dashboard — active */}
+          {/* 1. Home — purple */}
           <button className="sidebar-btn sidebar-btn--active" onClick={() => navigate("/dashboard")} title="Dashboard">
             <HiHome size={22} color="#4B2FA0" />
           </button>
 
-          {/* Claims */}
+          {/* 2. Lost Items — orange 4-grid squares */}
+          <button className="sidebar-btn" onClick={() => navigate("/lost-items", { state: { fromDashboard: true } })} title="Lost Items">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+          </button>
+
+          {/* 3. Found Items — green 3 hexagons */}
+          <button className="sidebar-btn" onClick={() => navigate("/found-items")} title="Found Items">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12,2 15.5,4.5 15.5,9.5 12,12 8.5,9.5 8.5,4.5"/>
+              <polygon points="6,12 9.5,14.5 9.5,19.5 6,22 2.5,19.5 2.5,14.5"/>
+              <polygon points="18,12 21.5,14.5 21.5,19.5 18,22 14.5,19.5 14.5,14.5"/>
+            </svg>
+          </button>
+
+          {/* 4. Claims — yellow box with magnifier */}
           <button className="sidebar-btn" onClick={() => navigate("/claims")} title="Claims">
             <span className="icon-stack">
               <BsBoxSeam size={20} color="#F59E0B" />
@@ -147,8 +166,8 @@ export default function Dashboard() {
             </span>
           </button>
 
-          {/* Found Items */}
-          <button className="sidebar-btn" onClick={() => navigate("/found-items")} title="Found Items">
+          {/* 5. Claims Resolved — teal box with tick */}
+          <button className="sidebar-btn" onClick={() => navigate("/claims-resolved")} title="Claims Resolved">
             <span className="icon-stack">
               <BsBoxSeam size={20} color="#14B8A6" />
               <span className="icon-check">✓</span>

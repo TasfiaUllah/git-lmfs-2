@@ -5,6 +5,7 @@ import Home      from './pages/Home';
 import LostItems from './pages/LostItems';
 import Dashboard from './pages/Dashboard';
 import Claims    from './pages/Claims';
+import ClaimsResolved from './pages/ClaimsResolved';
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/lost-items" element={<LostItems />} />
         <Route path="/dashboard"  element={<Dashboard />} />
         <Route path="/claims"     element={<Claims />} />
+        <Route path="/claims-resolved" element={<ClaimsResolved />} />
         
       </Routes>
     </BrowserRouter>
