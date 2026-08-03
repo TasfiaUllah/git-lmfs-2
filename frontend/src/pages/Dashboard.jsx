@@ -63,53 +63,64 @@ export default function Dashboard() {
     if (!token) { navigate("/login"); return; }
     const headers = { Authorization: `Bearer ${token}` };
 
-    fetch(`${API_BASE}/auth/me`, { headers })
-      .then(r => r.json())
-      .then(data => {
-        const name = data.fullName || data.name;
-        if (name) {
-          localStorage.setItem("userName", name);
-          setUser(prev => ({ ...prev, name, stats: data.stats || prev.stats }));
-        }
-      })
-      .catch(() => {});
+ fetch(`${API_BASE}/auth/profile`, { headers })
+  .then(r => r.json())
+  .then(data => {
+    const name = data.user?.fullName || data.user?.name;
 
-    fetch(`${API_BASE}/items/my-lost`, { headers })
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setLostItems(data.map((item, i) => ({
-            id:       item.id,
-            img:      item.imageUrl || TEMP_LOST_ITEMS[i % TEMP_LOST_ITEMS.length].img,
-            name:     item.name,
-            date:     `Lost on ${new Date(item.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`,
-            location: item.location,
-            category: item.category,
-            claims:   item.claimCount || 0,
-            status:   item.status     || "No Claims",
-          })));
-        }
-      })
-      .catch(() => {});
+    if (name) {
+      localStorage.setItem("userName", name);
+      setUser(prev => ({
+        ...prev,
+        name,
+      }));
+    }
+  })
+  .catch(console.error);
 
-    fetch(`${API_BASE}/items/my-found`, { headers })
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setFoundItems(data.map((item, i) => ({
-            id:       item.id,
-            img:      item.imageUrl || TEMP_FOUND_ITEMS[i % TEMP_FOUND_ITEMS.length].img,
-            name:     item.name,
-            date:     `Found on ${new Date(item.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`,
-            location: item.location,
-            category: item.category,
-            claims:   item.claimCount || 0,
-            status:   item.status     || "No Claims",
-          })));
-        }
-      })
-      .catch(() => {});
-  }, [navigate]);
+    fetch(`${API_BASE}/items/lost/my`, { headers })
+  .then(r => r.json())
+  .then(data => {
+    if (Array.isArray(data.items) && data.items.length > 0) {
+      setLostItems(data.items.map((item, i) => ({
+        id: item.id,
+        img: item.imageUrl || TEMP_LOST_ITEMS[i % TEMP_LOST_ITEMS.length].img,
+        name: item.itemName,
+        date: `Lost on ${new Date(item.createdAt).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })}`,
+        location: item.Location?.locationName,
+        category: item.Category?.categoryName,
+        claims: item.claimCount || 0,
+        status: item.claimStatus,
+      })));
+    }
+  })
+  .catch(console.error);
+fetch(`${API_BASE}/items/found/my`, { headers })
+  .then(r => r.json())
+  .then(data => {
+    if (Array.isArray(data.items) && data.items.length > 0) {
+      setFoundItems(data.items.map((item, i) => ({
+        id: item.id,
+        img: item.imageUrl || TEMP_FOUND_ITEMS[i % TEMP_FOUND_ITEMS.length].img,
+        name: item.itemName,
+        date: `Found on ${new Date(item.createdAt).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        })}`,
+        location: item.Location?.locationName,
+        category: item.Category?.categoryName,
+        claims: item.claimCount || 0,
+        status: item.claimStatus,
+      })));
+    }
+  })
+  .catch(console.error);
+  }, [navigate]); 
 
   const handleLogout = () => {
     localStorage.removeItem("token");

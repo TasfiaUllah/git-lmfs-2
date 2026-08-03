@@ -52,38 +52,38 @@ function Home() {
 
 
   // Fetch from API
-  useEffect(() => {
-    axios.get(`${API_BASE}/items/lost?limit=4`)
-      .then(res => {
-        const data = res.data.map((item, i) => ({
-          id:       item.id,
-          img:      item.imageUrl || [item1, item2, item3, item4][i % 4],
-          name:     item.name,
-          location: item.location,
-          time:     item.createdAt,
-        }));
-        setLostItems(data);
-      })
-      .catch(() => {});
+useEffect(() => {
+  axios.get(`${API_BASE}/items/lost/recent`)
+    .then(res => {
+      const data = res.data.items.map((item, i) => ({
+        id: item.id,
+        img: item.imageUrl || [item1, item2, item3, item4][i % 4],
+        name: item.itemName,
+        location: item.Location?.locationName,
+        time: item.createdAt,
+      }));
+      setLostItems(data);
+    })
+    .catch(console.error);
 
-    axios.get(`${API_BASE}/items/found?limit=4`)
-      .then(res => {
-        const data = res.data.map((item, i) => ({
-          id:       item.id,
-          img:      item.imageUrl || [found1, found2, found3, found4][i % 4],
-          name:     item.name,
-          location: item.location,
-          time:     item.createdAt,
-        }));
-        setFoundItems(data);
-      })
-      .catch(() => {});
+  axios.get(`${API_BASE}/items/found/recent`)
+    .then(res => {
+      const data = res.data.items.map((item, i) => ({
+        id: item.id,
+        img: item.imageUrl || [found1, found2, found3, found4][i % 4],
+        name: item.itemName,
+        location: item.Location?.locationName,
+        time: item.createdAt,
+      }));
+      setFoundItems(data);
+    })
+    .catch(console.error);
 
-    axios.get(`${API_BASE}/stats`)
-      .then(res => setStats(res.data))
-      .catch(() => {});
-  }, []);
+  axios.get(`${API_BASE}/items/stats`)
+    .then(res => setStats(res.data))
+    .catch(console.error);
 
+}, []);
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);

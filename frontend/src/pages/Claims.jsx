@@ -47,27 +47,35 @@ export default function Claims() {
     const token = localStorage.getItem("token");
     if (!token) { navigate("/login"); return; }
 
-    fetch(`${API_BASE}/claims/my-claims`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setClaims(data.map((item, i) => ({
-            id:          item.id,
-            img:         item.imageUrl || TEMP_CLAIMS[i % TEMP_CLAIMS.length].img,
-            name:        item.itemName || item.name,
-            location:    item.location,
-            category:    item.category,
-            description: item.description,
-            status:      item.status || "Pending",
-            timeAgo:     item.timeAgo || "",
-            date:        item.date    || "",
-            time:        item.time    || "",
-          })));
-        }
-      })
-      .catch(() => {});
+    fetch(`${API_BASE}/claims/my`, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+})
+  .then((r) => r.json())
+  .then((data) => {
+    if (Array.isArray(data.claims) && data.claims.length > 0) {
+      setClaims(
+        data.claims.map((claim, i) => ({
+          id: claim.id,
+          img:
+            claim.FoundItem?.imageUrl ||
+            TEMP_CLAIMS[i % TEMP_CLAIMS.length].img,
+
+          name: claim.FoundItem?.itemName,
+          location: claim.FoundItem?.Location?.locationName,
+          category: claim.FoundItem?.Category?.categoryName,
+          description: claim.FoundItem?.description,
+
+          status: claim.status,
+          timeAgo: "",
+          date: claim.createdAt,
+          time: claim.createdAt,
+        }))
+      );
+    }
+  })
+  .catch(console.error);
   }, [navigate]);
 
   const handleLogout = () => {

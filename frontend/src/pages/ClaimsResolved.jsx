@@ -60,28 +60,57 @@ export default function ClaimsResolved() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) { navigate("/login"); return; }
-    fetch(`${API_BASE}/claims/resolved`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setResolved(data.map((item, i) => ({
-            id:              item.id,
-            img:             item.imageUrl || TEMP_RESOLVED[i % TEMP_RESOLVED.length].img,
-            name:            item.itemName || item.name,
-            category:        item.category,
-            location:        item.location,
-            reporter:        item.reporter || TEMP_RESOLVED[i % TEMP_RESOLVED.length].reporter,
-            date:            item.date     || "",
-            time:            item.time     || "",
-            outcome:         item.outcome  || "Approved",
-            resolutionDays:  item.resolutionDays  || 1,
-            resolutionHours: item.resolutionHours || 1,
-          })));
-        }
-      })
-      .catch(() => {});
+    fetch(`${API_BASE}/claims/my?status=resolved`, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+})
+  .then((r) => r.json())
+  .then((data) => {
+    if (Array.isArray(data.claims) && data.claims.length > 0) {
+      setResolved(
+        data.claims.map((claim, i) => ({
+          id: claim.id,
+
+          img:
+            claim.FoundItem?.imageUrl ||
+            TEMP_RESOLVED[i % TEMP_RESOLVED.length].img,
+
+          name:
+            claim.FoundItem?.itemName || "Unknown Item",
+
+          category:
+            claim.FoundItem?.Category?.categoryName || "Unknown",
+
+          location:
+            claim.FoundItem?.Location?.locationName || "Unknown",
+
+          reporter: {
+            name:
+              claim.FoundItem?.User?.fullName ||
+              TEMP_RESOLVED[i % TEMP_RESOLVED.length].reporter.name,
+
+            id:
+              claim.FoundItem?.User?.matrixId ||
+              TEMP_RESOLVED[i % TEMP_RESOLVED.length].reporter.id,
+          },
+
+          date: claim.createdAt,
+
+          time: new Date(claim.createdAt).toLocaleTimeString(),
+
+          outcome:
+            claim.status
+              ? claim.status.charAt(0).toUpperCase() + claim.status.slice(1)
+              : "Approved",
+
+          resolutionDays: 1,
+          resolutionHours: 1,
+        }))
+      );
+    }
+  })
+  .catch(console.error);
   }, [navigate]);
 
   const handleLogout = () => {

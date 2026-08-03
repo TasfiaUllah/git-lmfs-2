@@ -226,6 +226,26 @@ const getClaimStatusLabel = (status) => {
   return "No Claims";
 };
 
+// ✅ GET Home Stats (Public - Home Page)
+const getHomeStats = async (req, res) => {
+  try {
+    const reported = await LostItem.count();
+    const found = await FoundItem.count();
+    const users = await User.count();
+
+    res.status(200).json({
+      reported,
+      found,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
 // ✅ GET Dashboard Stats
 const getDashboardStats = async (req, res) => {
   try {
@@ -480,6 +500,7 @@ const getSavedItems = async (req, res) => {
 module.exports = {
   getRecentLostItems,
   getRecentFoundItems,
+  getHomeStats,
   reportLostItem,
   reportFoundItem,
   searchItems,
