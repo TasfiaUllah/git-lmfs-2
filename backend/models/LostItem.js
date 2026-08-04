@@ -10,6 +10,10 @@ const LostItem = sequelize.define("LostItem", {
     autoIncrement: true,
     primaryKey: true,
   },
+  images: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
   itemName: {
     type: DataTypes.STRING,
     allowNull: false,

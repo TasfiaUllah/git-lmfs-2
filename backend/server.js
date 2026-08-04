@@ -7,7 +7,9 @@ dotenv.config();
 const { connectDB } = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const itemRoutes = require("./routes/itemRoutes");
-const claimRoutes = require("./routes/claimRoutes"); 
+const claimRoutes = require("./routes/claimRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
+const locationRoutes = require("./routes/locationRoutes");
 
 // Models import
 require("./models/Category");
@@ -24,11 +26,15 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
 app.use("/images", express.static("public/images"));
+app.use("/uploads", express.static("uploads"));
+
 app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/claims", claimRoutes);
-
+app.use("/api/categories", categoryRoutes);
+app.use("/api/locations", locationRoutes);
 
 app.get("/", (req, res) => {
   res.send("CampusFind API Running 🚀");

@@ -1,0 +1,74 @@
+.cf-stepper {
+  display: flex;
+  align-items: center;
+  padding: 24px 40px;
+  background: #fff;
+}
+
+.cf-stepper-item {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.cf-stepper-item:last-child {
+  flex: 0;
+}
+
+.cf-stepper-node {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cf-stepper-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  background: #f0edf7;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.cf-stepper-circle.active {
+  background: #4F18DC;
+  color: #fff;
+}
+
+.cf-stepper-circle.done {
+  background: #2B086F;
+  color: #fff;
+}
+
+.cf-stepper-labels {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.cf-stepper-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #222;
+}
+
+.cf-stepper-subtitle {
+  font-size: 12px;
+  color: #999;
+}
+
+.cf-stepper-line {
+  height: 2px;
+  background: #e4dff2;
+  flex: 1;
+  margin: 0 16px;
+}
+
+.cf-stepper-line.done {
+  background: #4F18DC;
+}

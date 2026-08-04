@@ -37,6 +37,7 @@ const getRecentFoundItems = async (req, res) => {
     });
     res.status(200).json({ items });
   } catch (error) {
+    console.error("getRecentFoundItems:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
@@ -50,6 +51,8 @@ const reportLostItem = async (req, res) => {
   }
 
   try {
+    const imagePaths = req.files ? req.files.map((f) => f.filename) : [];
+
     const item = await LostItem.create({
       itemName,
       description,
@@ -58,6 +61,7 @@ const reportLostItem = async (req, res) => {
       locationId,
       userId: req.user.id,
       status: "pending",
+      images: JSON.stringify(imagePaths),
     });
 
     res.status(201).json({ message: "Lost item reported ✅", item });
@@ -68,21 +72,25 @@ const reportLostItem = async (req, res) => {
 
 // ✅ POST Report Found Item
 const reportFoundItem = async (req, res) => {
-  const { itemName, description, dateFound, categoryId, locationId } = req.body;
+  const { itemName, description, dateFound, categoryId, locationId, currentlyWith } = req.body;
 
   if (!itemName || !categoryId) {
     return res.status(400).json({ message: "Item name and category are required ❌" });
   }
 
   try {
+    const imagePaths = req.files ? req.files.map((f) => f.filename) : [];
+
     const item = await FoundItem.create({
       itemName,
       description,
       dateFound,
       categoryId,
       locationId,
+      currentlyWith,
       userId: req.user.id,
       status: "pending",
+      images: JSON.stringify(imagePaths),
     });
 
     res.status(201).json({ message: "Found item reported ✅", item });
@@ -164,8 +172,12 @@ const getAllFoundItems = async (req, res) => {
 
     res.status(200).json({ items });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
+  console.error("getAllFoundItems:", error);
+  res.status(500).json({
+    message: "Server error",
+    error: error.message,
+  });
+}
 };
 
 // ✅ GET All Lost Items with filters
@@ -195,8 +207,12 @@ const getAllLostItems = async (req, res) => {
 
     res.status(200).json({ items });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
+  console.error("getAllFoundItems:", error);
+  res.status(500).json({
+    message: "Server error",
+    error: error.message,
+  });
+}
 };
 
 // ✅ GET All Categories
@@ -298,10 +314,13 @@ const getMyLostItems = async (req, res) => {
 
     res.status(200).json({ count: formatted.length, items: formatted });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error("getMyLostItems:", error);
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
-
 // ✅ GET My Found Items
 const getMyFoundItems = async (req, res) => {
   try {
@@ -330,6 +349,7 @@ const getMyFoundItems = async (req, res) => {
 
     res.status(200).json({ count: formatted.length, items: formatted });
   } catch (error) {
+    console.error("getMyFoundItems:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

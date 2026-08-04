@@ -22,6 +22,7 @@ const {
   getSavedItems,
 } = require("../controllers/itemController");
 const { protect } = require("../middleware/authMiddleware");
+const upload = require("../middleware/upload");
 
 // Public routes
 router.get("/lost/recent", getRecentLostItems);
@@ -34,8 +35,9 @@ router.get("/categories", getAllCategories);
 router.get("/locations", getAllLocations);
 
 // Protected routes
-router.post("/lost/report", protect, reportLostItem);
-router.post("/found/report", protect, reportFoundItem);
+router.post("/lost/report", protect, upload.array("images", 4), reportLostItem);
+router.post("/found/report", protect, upload.array("images", 4), reportFoundItem);
+
 router.post("/save", protect, saveItem);
 router.delete("/save", protect, unsaveItem);
 

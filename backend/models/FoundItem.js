@@ -10,6 +10,14 @@ const FoundItem = sequelize.define("FoundItem", {
     autoIncrement: true,
     primaryKey: true,
   },
+  currentlyWith: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  images: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
   itemName: {
     type: DataTypes.STRING,
     allowNull: false,
