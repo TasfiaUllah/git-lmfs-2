@@ -38,11 +38,15 @@ function Register() {
   setLoading(true);
 
   try {
-    const response = await fetch('http://localhost:5000/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+    const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
+// ...
+
+const response = await fetch(`${API_BASE}/auth/register`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(formData),
+});
 
     const data = await response.json();
 

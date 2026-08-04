@@ -171,9 +171,13 @@ useEffect(() => {
             </button>
           </div>
           <div className="hero-btns">
-            <button className="btn-report-lost">Report Lost Item</button>
-            <button className="btn-report-found">Report Found Item</button>
-          </div>
+  <button className="btn-report-lost" onClick={() => navigate("/report-lost")}>
+    Report Lost Item
+  </button>
+  <button className="btn-report-found" onClick={() => navigate("/report-found")}>
+    Report Found Item
+  </button>
+</div>
         </div>
         <div className="hero-img">
           <img src={heroImg} alt="Campus"/>

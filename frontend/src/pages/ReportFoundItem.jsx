@@ -55,7 +55,7 @@ function ReportFoundItem() {
   };
 
   const goNext = () => {
-    if (currentStep === 1 && (!formData.dateLost || !formData.locationId)) {
+    if (currentStep === 1 && (!formData.dateFound || !formData.locationId || !formData.currentlyWith)) {
         setError("Please fill in all required fields.");
         return;
     }
@@ -65,7 +65,7 @@ function ReportFoundItem() {
     }
     setError("");
     setCurrentStep((s) => Math.min(s + 1, 3));
-  };
+};
   const goBack = () => setCurrentStep((s) => Math.max(s - 1, 1));
 
   const handleSubmit = async () => {
